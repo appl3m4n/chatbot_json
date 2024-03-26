@@ -20,6 +20,12 @@ def get_answer_for_question(question: str, knowledge_base: dict) -> str | None:
             return q["answer"]
     return None
 
+def get_link_for_question(question: str, knowledge_base: dict) -> str | None:
+    for q in knowledge_base["questions"]:
+        if q["question"] == question:
+            return q["link"]
+    return None
+
 def chat_bot():
     knowledge_base: dict = load_knowledge_base('knowledge_base.json')
 
@@ -32,14 +38,15 @@ def chat_bot():
 
         if best_match:
             answer: str = get_answer_for_question(best_match, knowledge_base)
-            print(f'Bot: {answer}')
+            link: str = get_link_for_question(best_match, knowledge_base)
+            print(f'Bot: {answer} Link: {link}')
         else:
-            print('Bot: I don\'t know the answer. Can you teach me?')
-            new_answer: str = input('Type the answer or "skip" to skip: ')
+            print('Bot: I don\'t know the answer.')
+            #new_answer: str = input('Type the answer or "skip" to skip: ')
 
-            if new_answer.lower() != 'skip':
-                knowledge_base["questions"].append({"question": user_input, "answer": new_answer})
-                save_knowledge_base('knowledge_base.json', knowledge_base)
+            #if new_answer.lower() != 'skip':
+                #knowledge_base["questions"].append({"question": user_input, "answer": new_answer})
+                #save_knowledge_base('knowledge_base.json', knowledge_base)
 
 if __name__ == "__main__":
     chat_bot()
